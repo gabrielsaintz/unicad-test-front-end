@@ -24,6 +24,7 @@ export default function RegistrationPage() {
 	const [buttonState, setButtonState] = useState(false);
 	const [openSnackbar, setOpenSnackbar] = useState(false);
 	const [isSendingDelivery, setIsSendingDelivery] = useState(false);
+	const [newDate, setNewDate] = useState("");
 
 	const [starPoint, setStartingPoint] = useState<google.maps.LatLngLiteral>();
 	const [destPoint, setDestPoint] = useState<google.maps.LatLngLiteral>();
@@ -33,6 +34,8 @@ export default function RegistrationPage() {
 	const [openMap, setOpenMap] = useState(false);
 
 	useEffect(() => {
+		setNewDate(format(new Date(), "yyyy-MM-dd"));
+
 		if (values.name.length > 5 && values.date.length >= 10) {
 			setButtonState(false);
 		}
@@ -43,7 +46,7 @@ export default function RegistrationPage() {
 		if (values.name.length < 8 || values.date.length < 10) {
 			setButtonState(true);
 		}
-	}, [values, startAddressName]);
+	}, [newDate, values, startAddressName]);
 
 	const handleClose = (event: SyntheticEvent | Event, reason?: string) => {
 		if (reason === "clickaway") {
@@ -146,7 +149,7 @@ export default function RegistrationPage() {
 						onChange={handleChange("date")}
 						type="date"
 						inputProps={{
-							min: format(new Date(), "yyyy-MM-dd"),
+							min: newDate,
 							max: "2022-12-31",
 						}}
 					/>
