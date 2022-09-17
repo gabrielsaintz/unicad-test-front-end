@@ -11,7 +11,7 @@ import {
 import { ButtonStyled, TextFieldStyled } from "../Styled/styled";
 import { Address, containerStyle, DeliveryInfo } from "./style";
 import { Libraries, MapProps } from "./MapProps";
-import { CircularProgress, IconButton, Skeleton, Snackbar } from "@mui/material";
+import { IconButton, Skeleton, Snackbar } from "@mui/material";
 import { Close } from "@mui/icons-material";
 
 const position = {

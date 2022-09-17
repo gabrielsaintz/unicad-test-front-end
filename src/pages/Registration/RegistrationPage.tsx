@@ -23,7 +23,7 @@ export default function RegistrationPage() {
 
 	const [valuesSnackBar, setValuesSnackBar] = useState({
 		menssage: "",
-		status: "",
+		color: "",
 	});
 
 	const [buttonState, setButtonState] = useState(false);
@@ -87,7 +87,7 @@ export default function RegistrationPage() {
 
 		setValuesSnackBar({
 			menssage: "Entrega cadastrada com sucesso.",
-			status: "var(--main-light)",
+			color: "var(--main-light)",
 		});
 
 		setValues({
@@ -196,7 +196,7 @@ export default function RegistrationPage() {
 				ContentProps={{
 					style: {
 						fontSize: "1.6rem",
-						backgroundColor: valuesSnackBar.status,
+						backgroundColor: valuesSnackBar.color,
 					},
 				}}
 			/>
