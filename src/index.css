@@ -1,0 +1,23 @@
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+}
+
+:root {
+	font-family: "Montserrat", sans-serif;
+
+	--main-color: #1565c0;
+	--main-light: #4292ed;
+	--main-dark: #0e3b6f;
+	--off-white: #f9f9f9;
+	--gradient: linear-gradient(180deg, #ffffff 0%, #e2e2e2 100%);
+
+	--shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+
+	font-size: 62.5%;
+}
+
+body {
+	overflow: hidden;
+}
