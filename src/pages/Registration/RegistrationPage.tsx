@@ -21,6 +21,11 @@ export default function RegistrationPage() {
 		date: "",
 	});
 
+	const [valuesSnackBar, setValuesSnackBar] = useState({
+		menssage: "",
+		status: "",
+	});
+
 	const [buttonState, setButtonState] = useState(false);
 	const [openSnackbar, setOpenSnackbar] = useState(false);
 	const [isSendingDelivery, setIsSendingDelivery] = useState(false);
@@ -63,10 +68,6 @@ export default function RegistrationPage() {
 	async function handleSubmit(e: FormEvent) {
 		e.preventDefault();
 
-		if (startAddressName.length < 3 || destAddresName.length < 3) {
-			return setOpenSnackbar(true);
-		}
-
 		setIsSendingDelivery(true);
 		setButtonState(true);
 
@@ -84,6 +85,11 @@ export default function RegistrationPage() {
 		setIsSendingDelivery(false);
 		setButtonState(false);
 
+		setValuesSnackBar({
+			menssage: "Entrega cadastrada com sucesso.",
+			status: "var(--main-light)",
+		});
+
 		setValues({
 			name: "",
 			date: "",
@@ -91,6 +97,7 @@ export default function RegistrationPage() {
 
 		setStartAddressName("");
 		setDestAdressName("");
+		setOpenSnackbar(true);
 	}
 
 	const showMap = () => {
@@ -184,12 +191,12 @@ export default function RegistrationPage() {
 				open={openSnackbar}
 				autoHideDuration={3000}
 				onClose={handleClose}
-				message="Destino da entrega inválido"
+				message={valuesSnackBar.menssage}
 				action={action}
 				ContentProps={{
 					style: {
 						fontSize: "1.6rem",
-						backgroundColor: "#f64529",
+						backgroundColor: valuesSnackBar.status,
 					},
 				}}
 			/>

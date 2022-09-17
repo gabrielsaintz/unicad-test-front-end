@@ -30,6 +30,7 @@ export default function DeliveriesPage() {
 	const [destAddresName, setDestAdressName] = useState("");
 
 	const [openSnackbar, setOpenSnackbar] = useState(false);
+	const [isDeletingDelivery, setIsDeletingDelivery] = useState(false);
 
 	useEffect(() => {
 		const getDeliveries = async () => {
@@ -40,11 +41,14 @@ export default function DeliveriesPage() {
 	}, [deliveries]);
 
 	const DeleteDelivery = async (value?: DeliveriesData) => {
+		setIsDeletingDelivery(true);
 		const response = await api.delete("/deletedelivery", {
 			data: {
 				id: value?.id,
 			},
 		});
+		setIsDeletingDelivery(false);
+		setOpenSnackbar(true);
 	};
 
 	const showMap = (value?: DeliveriesData) => {
@@ -95,19 +99,6 @@ export default function DeliveriesPage() {
 
 	return (
 		<>
-			<Snackbar
-				open={openSnackbar}
-				autoHideDuration={3000}
-				onClose={handleClose}
-				message="registro de entrega deletado"
-				action={action}
-				ContentProps={{
-					style: {
-						fontSize: "1.6rem",
-						backgroundColor: "#f64529",
-					},
-				}}
-			/>
 			{map}
 			<PositionTable>
 				<Table sx={tableStyle} size="medium" aria-label="a dense table">
@@ -142,6 +133,7 @@ export default function DeliveriesPage() {
 										onClick={() => {
 											DeleteDelivery(value);
 										}}
+										disabled={isDeletingDelivery}
 									>
 										<Delete fontSize="large" />
 									</IconButton>
@@ -151,6 +143,19 @@ export default function DeliveriesPage() {
 					</TableBody>
 				</Table>
 			</PositionTable>
+			<Snackbar
+				open={openSnackbar}
+				autoHideDuration={3000}
+				onClose={handleClose}
+				message="Registro de entrega deletado com sucesso"
+				action={action}
+				ContentProps={{
+					style: {
+						fontSize: "1.6rem",
+						backgroundColor: "var(--main-light)",
+					},
+				}}
+			/>
 		</>
 	);
 }

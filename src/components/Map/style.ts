@@ -1,10 +1,11 @@
 import { styled } from "@mui/system";
 
 export const MapDialog = styled("div")(() => ({
-	display: "flex",
 	width: "100%",
 	height: "100%",
 	padding: "4rem 0rem 10rem 4rem",
+
+	display: "flex",
 
 	background: "rgba(0, 0, 0, 0.3)",
 	backdropFilter: "blur(4px)",
@@ -48,3 +49,8 @@ export const DeliveryInfo = styled("div")(() => ({
 		color: "var(--main-color)",
 	},
 }));
+
+export const containerStyle = {
+	width: "100%",
+	height: "100%",
+};

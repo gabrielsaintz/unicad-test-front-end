@@ -9,15 +9,10 @@ import {
 } from "@react-google-maps/api";
 
 import { ButtonStyled, TextFieldStyled } from "../Styled/styled";
-import { Address, DeliveryInfo } from "./style";
+import { Address, containerStyle, DeliveryInfo } from "./style";
 import { Libraries, MapProps } from "./MapProps";
-import { IconButton, Snackbar } from "@mui/material";
+import { CircularProgress, IconButton, Skeleton, Snackbar } from "@mui/material";
 import { Close } from "@mui/icons-material";
-
-const containerStyle = {
-	width: "100%",
-	height: "100%",
-};
 
 const position = {
 	lat: -7.260780199999999,
@@ -130,6 +125,13 @@ function Map({
 	}, [origin, destination]);
 
 	const directionsCallback = useCallback((res: any) => {
+		if (res.status === "ZERO_RESULTS") {
+			setStartAddress("");
+			setDestAddress("");
+			setOrigin(null);
+			setDestination(null);
+			setOpenSnackbar(true);
+		}
 		if (res !== null && res.status === "OK") {
 			setResponse(res);
 			closeDialogMap();
@@ -137,7 +139,6 @@ function Map({
 			setStartAddress("");
 			setDestAddress("");
 			setOpenSnackbar(true);
-			console.log(res);
 		}
 	}, []);
 
@@ -237,7 +238,13 @@ function Map({
 			)}
 		</GoogleMap>
 	) : (
-		<></>
+		<Skeleton
+			style={{
+				width: "100%",
+				height: "100%",
+				transform: "scale(1,1)",
+			}}
+		/>
 	);
 }
 
