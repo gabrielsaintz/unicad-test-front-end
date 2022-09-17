@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { memo, SyntheticEvent, useCallback, useEffect, useMemo, useState } from "react";
 import {
 	GoogleMap,
 	Marker,
@@ -11,6 +11,8 @@ import {
 import { ButtonStyled, TextFieldStyled } from "../Styled/styled";
 import { Address, DeliveryInfo } from "./style";
 import { Libraries, MapProps } from "./MapProps";
+import { IconButton, Snackbar } from "@mui/material";
+import { Close } from "@mui/icons-material";
 
 const containerStyle = {
 	width: "100%",
@@ -40,6 +42,7 @@ function Map({
 	const [searchBoxB, setSearchBoxB] = useState<google.maps.places.SearchBox>();
 	const [pointA, setPointA] = useState<google.maps.LatLngLiteral | null>();
 	const [pointB, setPointB] = useState<google.maps.LatLngLiteral | null>();
+	const [openSnackbar, setOpenSnackbar] = useState(false);
 
 	const [startAdressName, setStartAdressName] = useState("");
 	const [destAddressName, setDestAddressName] = useState("");
@@ -115,8 +118,6 @@ function Map({
 
 			setStartAddress(startAdressName);
 			setDestAddress(destAddressName);
-
-			closeDialogMap();
 		}
 	};
 
@@ -130,9 +131,12 @@ function Map({
 
 	const directionsCallback = useCallback((res: any) => {
 		if (res !== null && res.status === "OK") {
-			setResponse(null);
 			setResponse(res);
+			closeDialogMap();
 		} else {
+			setStartAddress("");
+			setDestAddress("");
+			setOpenSnackbar(true);
 			console.log(res);
 		}
 	}, []);
@@ -143,6 +147,21 @@ function Map({
 		};
 	}, [response]);
 
+	const handleClose = (event: SyntheticEvent | Event, reason?: string) => {
+		if (reason === "clickaway") {
+			return;
+		}
+		setOpenSnackbar(false);
+	};
+
+	const action = (
+		<>
+			<IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+				<Close fontSize="small" />
+			</IconButton>
+		</>
+	);
+
 	return isLoaded ? (
 		<GoogleMap
 			onLoad={onMapLoad}
@@ -150,6 +169,21 @@ function Map({
 			center={position}
 			zoom={15}
 		>
+			<Snackbar
+				open={openSnackbar}
+				autoHideDuration={2000}
+				onClose={handleClose}
+				message="Destino da entrega inválido"
+				action={action}
+				ContentProps={{
+					style: {
+						fontSize: "1.6rem",
+						backgroundColor: "#f64529",
+						margin: "10rem",
+					},
+				}}
+			/>
+
 			<Address>
 				<DeliveryInfo className="DeliveriesPage">
 					Ponto de Partida:
@@ -181,7 +215,6 @@ function Map({
 					className="RegisterDeliveriesPage"
 					variant="contained"
 					onClick={() => {
-						setMap(null);
 						traceRoute();
 					}}
 				>

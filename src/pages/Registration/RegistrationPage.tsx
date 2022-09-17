@@ -3,6 +3,7 @@ import Map from "../../components/Map/Index";
 
 import { Close, Room } from "@mui/icons-material";
 import { Box, CircularProgress, IconButton, Snackbar } from "@mui/material";
+import { format } from "date-fns";
 
 import {
 	ButtonStyled,
@@ -32,14 +33,17 @@ export default function RegistrationPage() {
 	const [openMap, setOpenMap] = useState(false);
 
 	useEffect(() => {
-		if (values.name.length < 8 || values.date.length < 10) {
-			setButtonState(true);
-		}
-
 		if (values.name.length > 5 && values.date.length >= 10) {
 			setButtonState(false);
 		}
-	}, [values]);
+
+		if (startAddressName.length < 1 || destAddresName.length < 1) {
+			setButtonState(true);
+		}
+		if (values.name.length < 8 || values.date.length < 10) {
+			setButtonState(true);
+		}
+	}, [values, startAddressName]);
 
 	const handleClose = (event: SyntheticEvent | Event, reason?: string) => {
 		if (reason === "clickaway") {
@@ -47,8 +51,6 @@ export default function RegistrationPage() {
 		}
 		setOpenSnackbar(false);
 	};
-
-	console.log(values.date.length, values.name.length);
 
 	const handleChange =
 		(prop: keyof Values) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -76,21 +78,19 @@ export default function RegistrationPage() {
 			},
 		});
 
-		console.log(isSendingDelivery);
-
 		setIsSendingDelivery(false);
 		setButtonState(false);
+
+		setValues({
+			name: "",
+			date: "",
+		});
+
+		setStartAddressName("");
+		setDestAdressName("");
 	}
 
 	const showMap = () => {
-		console.log(
-			values.name,
-			values.date,
-			starPoint,
-			destPoint,
-			startAddressName,
-			destAddresName
-		);
 		setOpenMap(!openMap);
 	};
 
@@ -109,7 +109,7 @@ export default function RegistrationPage() {
 				initialCoordinates={null}
 				destinationCoordinates={null}
 			/>
-			<IconButtonStyled onClick={showMap}>
+			<IconButtonStyled className="closeMap" onClick={showMap}>
 				<Close />
 			</IconButtonStyled>
 		</MapDialog>
@@ -137,10 +137,20 @@ export default function RegistrationPage() {
 					onSubmit={handleSubmit}
 				>
 					<TextFieldStyled
+						value={values.name}
 						onChange={handleChange("name")}
 						placeholder="Nome do Cliente"
 					/>
-					<TextFieldStyled onChange={handleChange("date")} type="date" />
+					<TextFieldStyled
+						value={values.date}
+						onChange={handleChange("date")}
+						type="date"
+						inputProps={{
+							min: format(new Date(), "yyyy-MM-dd"),
+							max: "2022-12-31",
+						}}
+					/>
+
 					<TextFieldStyled
 						placeholder="Ponto de partida"
 						disabled
@@ -169,7 +179,7 @@ export default function RegistrationPage() {
 
 			<Snackbar
 				open={openSnackbar}
-				autoHideDuration={20000}
+				autoHideDuration={3000}
 				onClose={handleClose}
 				message="Destino da entrega inválido"
 				action={action}

@@ -10,4 +10,10 @@ export interface MapProps {
 	destinationCoordinates: google.maps.LatLngLiteral | null | undefined;
 }
 
-export type Libraries = ("drawing" | "geometry" | "localContext" | "places" | "visualization")[];
+export type Libraries = (
+	| "drawing"
+	| "geometry"
+	| "localContext"
+	| "places"
+	| "visualization"
+)[];

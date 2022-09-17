@@ -9,7 +9,7 @@ import { LayoutStyled, NavBar, SideBar, SideBarOption } from "./LayoutStyle";
 import { IconButtonStyled } from "../Styled/styled";
 
 export default function Layout() {
-	const [sidebar, setSidebar] = useState(false);
+	const [sidebar, setSidebar] = useState(true);
 
 	const icon = !sidebar ? (
 		<MenuIcon className="menuSidebar" />

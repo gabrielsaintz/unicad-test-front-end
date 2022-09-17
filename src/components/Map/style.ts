@@ -4,17 +4,24 @@ export const MapDialog = styled("div")(() => ({
 	display: "flex",
 	width: "100%",
 	height: "100%",
-	padding: "3rem 0rem 10rem 3rem",
+	padding: "4rem 0rem 10rem 4rem",
 
 	background: "rgba(0, 0, 0, 0.3)",
 	backdropFilter: "blur(4px)",
 	position: "fixed",
 	zIndex: 10,
+	"& .closeMap": {
+		marginTop: "-3.8rem",
+	},
+	"& svg": {
+		fontSize: "2.5rem",
+		color: "black",
+	},
 }));
 
 export const Address = styled("div")(() => ({
-	width: "240px",
-	marginLeft: "-120px",
+	width: "250px",
+	marginLeft: "-130px",
 	marginTop: "12px",
 	padding: "12px",
 

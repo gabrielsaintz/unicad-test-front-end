@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { SyntheticEvent, useEffect, useState } from "react";
 import { api } from "../../services/api";
 
 import Map from "../../components/Map/Index";
@@ -6,14 +6,16 @@ import { DeliveriesData } from "./DeliveriesData";
 
 import {
 	IconButton,
+	Snackbar,
 	Table,
 	TableBody,
 	TableCell,
 	TableHead,
 	TableRow,
 } from "@mui/material/";
+import { Close, Delete, Route } from "@mui/icons-material";
+
 import { PositionTable, Lineone, tableStyle } from "./style";
-import { Close, Route } from "@mui/icons-material";
 import { MapDialog } from "../../components/Map/style";
 import { IconButtonStyled } from "../../components/Styled/styled";
 
@@ -27,13 +29,23 @@ export default function DeliveriesPage() {
 	const [startAddressName, setStartAddressName] = useState("");
 	const [destAddresName, setDestAdressName] = useState("");
 
+	const [openSnackbar, setOpenSnackbar] = useState(false);
+
 	useEffect(() => {
 		const getDeliveries = async () => {
 			const response = await api.get("/getdeliveries");
 			setDeliveries(response.data);
 		};
 		getDeliveries();
-	}, []);
+	}, [deliveries]);
+
+	const DeleteDelivery = async (value?: DeliveriesData) => {
+		const response = await api.delete("/deletedelivery", {
+			data: {
+				id: value?.id,
+			},
+		});
+	};
 
 	const showMap = (value?: DeliveriesData) => {
 		if (value) {
@@ -60,14 +72,42 @@ export default function DeliveriesPage() {
 				initialCoordinates={starPoint}
 				destinationCoordinates={destPoint}
 			/>
-			<IconButtonStyled onClick={() => showMap()}>
+			<IconButtonStyled className="closeMap" onClick={() => showMap()}>
 				<Close />
 			</IconButtonStyled>
 		</MapDialog>
 	);
 
+	const handleClose = (event: SyntheticEvent | Event, reason?: string) => {
+		if (reason === "clickaway") {
+			return;
+		}
+		setOpenSnackbar(false);
+	};
+
+	const action = (
+		<>
+			<IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+				<Close fontSize="small" />
+			</IconButton>
+		</>
+	);
+
 	return (
 		<>
+			<Snackbar
+				open={openSnackbar}
+				autoHideDuration={3000}
+				onClose={handleClose}
+				message="registro de entrega deletado"
+				action={action}
+				ContentProps={{
+					style: {
+						fontSize: "1.6rem",
+						backgroundColor: "#f64529",
+					},
+				}}
+			/>
 			{map}
 			<PositionTable>
 				<Table sx={tableStyle} size="medium" aria-label="a dense table">
@@ -78,7 +118,7 @@ export default function DeliveriesPage() {
 							<Lineone align="left">Ponto de partida</Lineone>
 							<Lineone align="left">Ponto de destino</Lineone>
 							<Lineone align="left">Data da entrega</Lineone>
-							<Lineone align="right">Rota</Lineone>
+							<Lineone align="center">Rota</Lineone>
 						</TableRow>
 					</TableHead>
 					<TableBody>
@@ -90,13 +130,20 @@ export default function DeliveriesPage() {
 								<TableCell align="left">{value.start_address_name}</TableCell>
 								<TableCell align="left">{value.dest_addres_name}</TableCell>
 								<TableCell align="left">{value.delivery_date}</TableCell>
-								<TableCell align="right">
+								<TableCell align="center">
 									<IconButton
 										onClick={() => {
 											showMap(value);
 										}}
 									>
-										<Route />
+										<Route fontSize="large" />
+									</IconButton>
+									<IconButton
+										onClick={() => {
+											DeleteDelivery(value);
+										}}
+									>
+										<Delete fontSize="large" />
 									</IconButton>
 								</TableCell>
 							</TableRow>
