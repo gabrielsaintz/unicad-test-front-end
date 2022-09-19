@@ -56,7 +56,7 @@ export default function RegistrationPage() {
 			setButtonState(true);
 			setValidadeName({
 				validName: regex.test(values.name),
-				message: "O nome não pode conter caracteres do tipo númerico",
+				message: "O nome não pode conter caracteres do tipo numérico",
 			});
 		}
 
