@@ -123,6 +123,12 @@ export default function DeliveriesPage() {
 								<TableCell align="left">{value.delivery_date}</TableCell>
 								<TableCell align="center">
 									<IconButton
+										sx={{
+											color: "#4d4d4d",
+											"&:hover": {
+												color: "var(--main-light)",
+											},
+										}}
 										onClick={() => {
 											showMap(value);
 										}}
@@ -130,6 +136,12 @@ export default function DeliveriesPage() {
 										<Route fontSize="large" />
 									</IconButton>
 									<IconButton
+										sx={{
+											color: "#4d4d4d",
+											"&:hover": {
+												color: "#f64529",
+											},
+										}}
 										onClick={() => {
 											DeleteDelivery(value);
 										}}

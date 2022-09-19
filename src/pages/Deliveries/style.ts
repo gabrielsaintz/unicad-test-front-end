@@ -11,13 +11,16 @@ export const tableStyle = {
 	borderRadius: "1rem",
 	boxShadow: "var(--shadow)",
 
-	"& th, tr, td": {
+	"& tbody th, tbody tr, tbody td": {
 		fontFamily: `"Montserrat", sans-serif`,
 		fontSize: " 1.4rem",
+		fontWeight: 500,
 	},
 };
 
 export const Lineone = styled(TableCell)(() => ({
-	fontWeight: "600",
+	fontFamily: `"Montserrat", sans-serif`,
+	fontSize: " 1.4rem",
+	fontWeight: 600,
 	color: "var(--main-color)",
 }));

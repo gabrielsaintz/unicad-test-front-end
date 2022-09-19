@@ -8,8 +8,13 @@ export const TextFieldStyled = styled(TextField)(() => ({
 	"& input": {
 		height: "1rem",
 		fontFamily: `"Montserrat", sans-serif`,
-		fontWeight: "500",
+		fontWeight: 500,
 		fontSize: "1.6rem",
+	},
+
+	"& .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input.Mui-disabled": {
+		fontWeight: 600,
+		WebkitTextFillColor: "var(--main-color)",
 	},
 }));
 

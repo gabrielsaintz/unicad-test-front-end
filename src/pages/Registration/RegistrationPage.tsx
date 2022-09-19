@@ -24,6 +24,12 @@ export default function RegistrationPage() {
 	const [valuesSnackBar, setValuesSnackBar] = useState({
 		menssage: "",
 		color: "",
+		time: 0,
+	});
+
+	const [validateName, setValidadeName] = useState({
+		validName: false,
+		message: "",
 	});
 
 	const [buttonState, setButtonState] = useState(false);
@@ -37,12 +43,21 @@ export default function RegistrationPage() {
 	const [destAddresName, setDestAdressName] = useState("");
 
 	const [openMap, setOpenMap] = useState(false);
+	const regex = /[0-9]/;
 
 	useEffect(() => {
 		setNewDate(format(new Date(), "yyyy-MM-dd"));
 
 		if (values.name.length > 5 && values.date.length >= 10) {
 			setButtonState(false);
+		}
+
+		if (regex.test(values.name)) {
+			setButtonState(true);
+			setValidadeName({
+				validName: regex.test(values.name),
+				message: "O nome não pode conter caracteres do tipo númerico",
+			});
 		}
 
 		if (startAddressName.length < 1 || destAddresName.length < 1) {
@@ -62,7 +77,10 @@ export default function RegistrationPage() {
 
 	const handleChange =
 		(prop: keyof Values) => (event: React.ChangeEvent<HTMLInputElement>) => {
-			setValues({ ...values, [prop]: event.target.value });
+			setValues({
+				...values,
+				[prop]: event.target.value,
+			});
 		};
 
 	async function handleSubmit(e: FormEvent) {
@@ -88,6 +106,7 @@ export default function RegistrationPage() {
 		setValuesSnackBar({
 			menssage: "Entrega cadastrada com sucesso.",
 			color: "var(--main-light)",
+			time: 2000,
 		});
 
 		setValues({
@@ -146,34 +165,51 @@ export default function RegistrationPage() {
 					autoComplete="off"
 					onSubmit={handleSubmit}
 				>
-					<TextFieldStyled
-						value={values.name}
-						onChange={handleChange("name")}
-						placeholder="Nome do Cliente"
-					/>
-					<TextFieldStyled
-						value={values.date}
-						onChange={handleChange("date")}
-						type="date"
-						inputProps={{
-							min: newDate,
-							max: "2022-12-31",
-						}}
-					/>
+					<label>
+						Nome do cliente :
+						<TextFieldStyled
+							type="text"
+							helperText={regex.test(values.name) ? validateName.message : ""}
+							error={regex.test(values.name)}
+							value={values.name}
+							onChange={handleChange("name")}
+							placeholder="Digite o nome do cliente"
+						/>
+					</label>
+					<label>
+						Data da entrega :
+						<TextFieldStyled
+							value={values.date}
+							onChange={handleChange("date")}
+							type="date"
+							inputProps={{
+								min: newDate,
+								max: "2022-12-31",
+							}}
+						/>
+					</label>
+					<label>
+						Ponto de partida :
+						<TextFieldStyled
+							onClick={showMap}
+							placeholder="Ponto de partida"
+							disabled
+							value={startAddressName}
+						/>
+					</label>
+					<label>
+						Ponto de destino :
+						<TextFieldStyled
+							onClick={showMap}
+							placeholder="Ponto de destino"
+							disabled
+							value={destAddresName}
+						/>
+					</label>
 
-					<TextFieldStyled
-						placeholder="Ponto de partida"
-						disabled
-						value={startAddressName}
-					/>
-					<TextFieldStyled
-						placeholder="Ponto de destino"
-						disabled
-						value={destAddresName}
-					/>
-
-					<ButtonStyled onClick={showMap} variant="outlined">
-						Definir destino entrega
+					<ButtonStyled onClick={showMap} variant="contained">
+						<Room />
+						Clique para definir PONTO DE PARTIDA e PONTO DE ENTREGA
 						<Room />
 					</ButtonStyled>
 
@@ -189,7 +225,7 @@ export default function RegistrationPage() {
 
 			<Snackbar
 				open={openSnackbar}
-				autoHideDuration={3000}
+				autoHideDuration={valuesSnackBar.time}
 				onClose={handleClose}
 				message={valuesSnackBar.menssage}
 				action={action}

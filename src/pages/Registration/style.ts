@@ -12,6 +12,16 @@ export const boxStyle = {
 	backgroundColor: "white",
 	borderRadius: "1rem",
 	boxShadow: "var(--shadow)",
+
+	"& p ": {
+		paddingTop: "0.5rem",
+		fontSize: "1.2rem",
+		lineHeight: 0,
+	},
+	"& label ": {
+		fontSize: "1.6rem",
+		lineHeight: 1,
+	},
 };
 
 export const PositionForm = styled("div")(() => ({
