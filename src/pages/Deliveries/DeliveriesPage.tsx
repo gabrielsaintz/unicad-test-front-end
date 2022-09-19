@@ -38,7 +38,7 @@ export default function DeliveriesPage() {
 			setDeliveries(response.data);
 		};
 		getDeliveries();
-	}, [deliveries]);
+	}, []);
 
 	const DeleteDelivery = async (value?: DeliveriesData) => {
 		setIsDeletingDelivery(true);

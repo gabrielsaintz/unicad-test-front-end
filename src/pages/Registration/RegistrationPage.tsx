@@ -207,7 +207,7 @@ export default function RegistrationPage() {
 						/>
 					</label>
 
-					<ButtonStyled onClick={showMap} variant="contained">
+					<ButtonStyled onClick={showMap} variant="outlined">
 						<Room />
 						Clique para definir PONTO DE PARTIDA e PONTO DE ENTREGA
 						<Room />
