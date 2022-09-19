@@ -27,7 +27,7 @@ export default function DeliveriesPage() {
 	const [starPoint, setStartingPoint] = useState<google.maps.LatLngLiteral>();
 	const [destPoint, setDestPoint] = useState<google.maps.LatLngLiteral>();
 	const [startAddressName, setStartAddressName] = useState("");
-	const [destAddresName, setDestAdressName] = useState("");
+	const [destAddressName, setDestAdressName] = useState("");
 
 	const [openSnackbar, setOpenSnackbar] = useState(false);
 	const [isDeletingDelivery, setIsDeletingDelivery] = useState(false);
@@ -72,7 +72,7 @@ export default function DeliveriesPage() {
 				setStartPoint={setStartingPoint}
 				setDestPoint={setDestPoint}
 				initialAddressName={startAddressName}
-				secondAddressName={destAddresName}
+				secondAddressName={destAddressName}
 				initialCoordinates={starPoint}
 				destinationCoordinates={destPoint}
 			/>
