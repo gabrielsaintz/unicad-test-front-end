@@ -48,22 +48,27 @@ export default function RegistrationPage() {
 	useEffect(() => {
 		setNewDate(format(new Date(), "yyyy-MM-dd"));
 
-		if (values.name.length > 5 && values.date.length >= 10) {
+		if (values.name.length >= 4 && values.date.length >= 10 && !regex.test(values.name)) {
+			setValidadeName({
+				validName: false,
+				message: "",
+			});
 			setButtonState(false);
 		}
 
 		if (regex.test(values.name)) {
-			setButtonState(true);
 			setValidadeName({
-				validName: regex.test(values.name),
+				validName: true,
 				message: "O nome não pode conter caracteres do tipo numérico",
 			});
+			setButtonState(true);
 		}
 
 		if (startAddressName.length < 1 || destAddresName.length < 1) {
 			setButtonState(true);
 		}
-		if (values.name.length < 8 || values.date.length < 10) {
+
+		if (values.name.length < 4 || values.date.length < 10) {
 			setButtonState(true);
 		}
 	}, [newDate, values, startAddressName]);
@@ -81,6 +86,12 @@ export default function RegistrationPage() {
 				...values,
 				[prop]: event.target.value,
 			});
+			if (prop === "name" && event.target.value.length) {
+				setValidadeName({
+					validName: event.target.value.length < 4,
+					message: event.target.value.length < 4 ? "O nome deve conter no minimo 4" : "",
+				});
+			}
 		};
 
 	async function handleSubmit(e: FormEvent) {
@@ -169,8 +180,8 @@ export default function RegistrationPage() {
 						Nome do cliente :
 						<TextFieldStyled
 							type="text"
-							helperText={regex.test(values.name) ? validateName.message : ""}
-							error={regex.test(values.name)}
+							helperText={validateName.message}
+							error={validateName.validName}
 							value={values.name}
 							onChange={handleChange("name")}
 							placeholder="Digite o nome do cliente"
@@ -179,6 +190,7 @@ export default function RegistrationPage() {
 					<label>
 						Data da entrega :
 						<TextFieldStyled
+							helperText={values.date.length < 10 ? "Defina uma data" : ""}
 							value={values.date}
 							onChange={handleChange("date")}
 							type="date"
